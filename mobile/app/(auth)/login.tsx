@@ -7,24 +7,29 @@ import {
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
-  Platform,
+  Platform
 } from 'react-native';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/colors';
 import { Spacing, BorderRadius } from '@/constants/spacing';
-import { LogIn, Mail, Lock } from 'lucide-react-native';
+import { LogIn, Mail, Lock, Unlock } from 'lucide-react-native';
+import { styles } from '@/assets/styles.style';
+import { InputField } from '@/components/form/InputField';
+import { InputPassword } from '@/components/form/InputPassword';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useAuth();
+  const [errorMsg, setErrorMsg] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
   const router = useRouter();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Thất bại', 'Vui lòng nhập đủ thông tin đăng nhập !');
       return;
     }
 
@@ -32,8 +37,8 @@ export default function LoginScreen() {
     try {
       await login(email, password);
       router.replace('/(tabs)');
-    } catch (error) {
-      Alert.alert('Login Failed', 'Invalid credentials');
+    } catch (error: any) {
+      setErrorMsg(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -44,8 +49,8 @@ export default function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.content}>
@@ -56,30 +61,27 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <Mail size={20} color={Colors.textSecondary} style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              placeholderTextColor={Colors.textMuted}
-            />
-          </View>
+          <InputField
+            icon={<Mail size={20} color={Colors.textSecondary} style={styles.inputIcon} />}
+            placeholder="Email"
+            value={email}
+            onChangeText={(text: string) => {
+              setEmail(text);
+              setEmailError('');
+            }}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            error={emailError}
+          />
 
-          <View style={styles.inputContainer}>
-            <Lock size={20} color={Colors.textSecondary} style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Mật khẩu"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              placeholderTextColor={Colors.textMuted}
-            />
-          </View>
+          <InputPassword
+            placeholder="Mật khẩu"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+            }}
+            secureToggle={true}
+          />
 
           <TouchableOpacity
             style={[styles.loginButton, isLoading && styles.loginButtonDisabled]}
@@ -109,94 +111,3 @@ export default function LoginScreen() {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  content: {
-    flex: 1,
-    padding: Spacing.lg,
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: Spacing.xxxl,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: Colors.text,
-    marginTop: Spacing.md,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: Spacing.sm,
-  },
-  form: {
-    gap: Spacing.lg,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.surface,
-    borderRadius: BorderRadius.lg,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    paddingHorizontal: Spacing.md,
-  },
-  inputIcon: {
-    marginRight: Spacing.sm,
-  },
-  input: {
-    flex: 1,
-    height: 50,
-    fontSize: 16,
-    color: Colors.text,
-  },
-  loginButton: {
-    backgroundColor: Colors.primary,
-    borderRadius: BorderRadius.lg,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: Spacing.md,
-  },
-  loginButtonDisabled: {
-    backgroundColor: Colors.neutral[400],
-  },
-  loginButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  registerText: {
-    textAlign: 'center',
-    color: Colors.textSecondary,
-    marginTop: Spacing.lg,
-  },
-  registerLink: {
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-  demoAccounts: {
-    backgroundColor: Colors.neutral[50],
-    padding: Spacing.md,
-    borderRadius: BorderRadius.md,
-    marginTop: Spacing.xl,
-  },
-  demoTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: Spacing.sm,
-  },
-  demoText: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    marginBottom: 2,
-  },
-});

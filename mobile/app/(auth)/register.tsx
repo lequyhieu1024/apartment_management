@@ -2,54 +2,87 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  ScrollView, Alert
 } from 'react-native';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/colors';
-import { Spacing, BorderRadius } from '@/constants/spacing';
-import { UserPlus, Mail, Lock, User, ChevronDown } from 'lucide-react-native';
+import { UserPlus, Mail, User } from 'lucide-react-native';
+import { styles } from '@/assets/styles.style';
+import { InputField } from '@/components/form/InputField';
+import { InputPassword } from '@/components/form/InputPassword';
 
 export default function RegisterScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('member');
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'admin',
+  });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
+
   const { register } = useAuth();
   const router = useRouter();
 
   const roles = [
     { value: 'admin', label: 'Admin (Chủ tòa nhà)' },
-    { value: 'member', label: 'Member (Cư dân)' },
+    { value: 'member', label: 'Member (Cư dân)' }
   ];
 
-  const handleRegister = async () => {
-    if (!email || !password || !name) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!form.name) {
+      newErrors.name = 'Vui lòng nhập họ và tên!';
+    } else if (form.name.length <= 5) {
+      newErrors.name = 'Họ và tên phải dài hơn 5 ký tự!';
     }
+
+    if (!form.email) {
+      newErrors.email = 'Vui lòng nhập email!';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = 'Vui lòng nhập địa chỉ email hợp lệ!';
+    }
+
+    if (!form.password) {
+      newErrors.password = 'Vui lòng nhập mật khẩu!';
+    } else if (form.password.length <= 6) {
+      newErrors.password = 'Mật khẩu phải dài hơn 6 ký tự!';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleRegister = async () => {
+    if (!validateForm()) return;
 
     setIsLoading(true);
     try {
-      await register(email, password, name, role);
-      router.replace('/(tabs)');
-    } catch (error) {
-      Alert.alert('Registration Failed', 'Please try again');
+      await register(form.email, form.password, form.name, form.role);
+      router.replace('/(auth)/login');
+    } catch (error: any) {
+      if (error.type === "validation") {
+        const formatted: { [key: string]: string } = {};
+        Object.keys(error.errors).forEach((field) => {
+          formatted[field] = error.errors[field][0];
+        });
+        setErrors(formatted);
+      } else {
+        Alert.alert("Đăng ký thất bại", error.message || "Có lỗi xảy ra");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -60,41 +93,40 @@ export default function RegisterScreen() {
         </View>
 
         <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <User size={20} color={Colors.textSecondary} style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Họ và tên"
-              value={name}
-              onChangeText={setName}
-              placeholderTextColor={Colors.textMuted}
-            />
-          </View>
+          <InputField
+            icon={<User size={20} color={Colors.textSecondary} style={styles.inputIcon} />}
+            placeholder="Họ và tên"
+            value={form.name}
+            onChangeText={(text: string) => {
+              setForm({ ...form, name: text });
+              setErrors((prev) => ({ ...prev, name: '' }));
+            }}
+            error={errors.name}
+          />
 
-          <View style={styles.inputContainer}>
-            <Mail size={20} color={Colors.textSecondary} style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              placeholderTextColor={Colors.textMuted}
-            />
-          </View>
+          <InputField
+            icon={<Mail size={20} color={Colors.textSecondary} style={styles.inputIcon} />}
+            placeholder="Email"
+            value={form.email}
+            onChangeText={(text: string) => {
+              setForm({ ...form, email: text });
+              setErrors((prev) => ({ ...prev, email: '' }));
+            }}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            error={errors.email}
+          />
 
-          <View style={styles.inputContainer}>
-            <Lock size={20} color={Colors.textSecondary} style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Mật khẩu"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              placeholderTextColor={Colors.textMuted}
-            />
-          </View>
+          <InputPassword
+            placeholder="Mật khẩu"
+            value={form.password}
+            onChangeText={(text) => {
+              setForm({ ...form, password: text });
+              setErrors((prev) => ({ ...prev, password: '' }));
+            }}
+            error={errors.password}
+            secureToggle={true}
+          />
 
           <View style={styles.roleContainer}>
             <Text style={styles.roleLabel}>Loại tài khoản:</Text>
@@ -103,14 +135,16 @@ export default function RegisterScreen() {
                 key={roleOption.value}
                 style={[
                   styles.roleOption,
-                  role === roleOption.value && styles.roleOptionSelected
+                  form.role === roleOption.value && styles.roleOptionSelected
                 ]}
-                onPress={() => setRole(roleOption.value)}
+                onPress={() => setForm({ ...form, role: roleOption.value })}
               >
-                <Text style={[
-                  styles.roleOptionText,
-                  role === roleOption.value && styles.roleOptionTextSelected
-                ]}>
+                <Text
+                  style={[
+                    styles.roleOptionText,
+                    form.role === roleOption.value && styles.roleOptionTextSelected
+                  ]}
+                >
                   {roleOption.label}
                 </Text>
               </TouchableOpacity>
@@ -137,106 +171,3 @@ export default function RegisterScreen() {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: Spacing.lg,
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: Spacing.xxxl,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: Colors.text,
-    marginTop: Spacing.md,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: Spacing.sm,
-  },
-  form: {
-    gap: Spacing.lg,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.surface,
-    borderRadius: BorderRadius.lg,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    paddingHorizontal: Spacing.md,
-  },
-  inputIcon: {
-    marginRight: Spacing.sm,
-  },
-  input: {
-    flex: 1,
-    height: 50,
-    fontSize: 16,
-    color: Colors.text,
-  },
-  roleContainer: {
-    marginTop: Spacing.sm,
-  },
-  roleLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: Spacing.sm,
-  },
-  roleOption: {
-    backgroundColor: Colors.surface,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.md,
-    marginBottom: Spacing.sm,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  roleOptionSelected: {
-    backgroundColor: Colors.primaryLight,
-    borderColor: Colors.primary,
-  },
-  roleOptionText: {
-    fontSize: 14,
-    color: Colors.text,
-  },
-  roleOptionTextSelected: {
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-  registerButton: {
-    backgroundColor: Colors.primary,
-    borderRadius: BorderRadius.lg,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: Spacing.md,
-  },
-  registerButtonDisabled: {
-    backgroundColor: Colors.neutral[400],
-  },
-  registerButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  loginText: {
-    textAlign: 'center',
-    color: Colors.textSecondary,
-    marginTop: Spacing.lg,
-  },
-  loginLink: {
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-});
