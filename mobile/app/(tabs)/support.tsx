@@ -6,11 +6,21 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Alert,
+  Alert, FlatList,
 } from 'react-native';
 import { Colors } from '@/constants/colors';
 import { Spacing, BorderRadius } from '@/constants/spacing';
-import { CircleHelp as HelpCircle, Plus, TriangleAlert as AlertTriangle, PenTool as Tool, MessageSquare, Zap, CircleCheck as CheckCircle, Clock } from 'lucide-react-native';
+import {
+  CircleHelp as HelpCircle,
+  Plus,
+  TriangleAlert as AlertTriangle,
+  PenTool as Tool,
+  MessageSquare,
+  Zap,
+  CircleCheck as CheckCircle,
+  Clock,
+  Search
+} from 'lucide-react-native';
 import type { Ticket } from '@/types/chat';
 
 const mockTickets: Ticket[] = [

@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Plus } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/colors';
 import { Spacing, BorderRadius } from '@/constants/spacing';
-import { Users, Building, CreditCard, CircleAlert as AlertCircle, Crown } from 'lucide-react-native';
+import {Users, Building, CreditCard, CircleAlert as AlertCircle, Crown, Plus} from 'lucide-react-native';
 
 interface AdminUser {
   id: string;

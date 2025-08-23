@@ -101,7 +101,7 @@ export default function SettingsScreen() {
               <Text style={styles.profileName}>{user?.name}</Text>
               <Text style={styles.profileEmail}>{user?.email}</Text>
               <View style={styles.roleContainer}>
-                {getRoleIcon(user?.role || 'member')({ size: 14, color: Colors.primary })}
+                {/*{getRoleIcon(user?.role || 'member')({ size: 14, color: Colors.primary })}*/}
                 <Text style={styles.roleText}>{getRoleLabel(user?.role || 'member')}</Text>
               </View>
             </View>
