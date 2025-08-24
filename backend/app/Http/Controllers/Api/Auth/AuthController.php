@@ -24,7 +24,7 @@ class AuthController extends Controller
         $data = $request->all();
         $user = $this->userRepository->getOneBy('email', $data['email']);
         if (!$user || ! Hash::check($data['password'], $user->password)) {
-            $this->errorResponse('Tài khoản không chính xác !');
+            return $this->errorResponse('Tài khoản không chính xác !');
         }
 
         $token = $user->createToken('api-token')->plainTextToken;

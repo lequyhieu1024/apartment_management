@@ -20,25 +20,54 @@ import { InputPassword } from '@/components/form/InputPassword';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useAuth();
-  const [errorMsg, setErrorMsg] = useState<string>('');
-  const [emailError, setEmailError] = useState<string>('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Thất bại', 'Vui lòng nhập đủ thông tin đăng nhập !');
-      return;
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'admin',
+  });
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!form.email) {
+      newErrors.email = 'Vui lòng nhập email!';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = 'Vui lòng nhập địa chỉ email hợp lệ!';
     }
+
+    if (!form.password) {
+      newErrors.password = 'Vui lòng nhập mật khẩu!';
+    } else if (form.password.length <= 6) {
+      newErrors.password = 'Mật khẩu phải dài hơn 6 ký tự!';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleLogin = async () => {
+    if (!validateForm()) return;
 
     setIsLoading(true);
     try {
-      await login(email, password);
+      await login(form.email, form.password);
       router.replace('/(tabs)');
     } catch (error: any) {
-      setErrorMsg(error.message);
+      if (error.type === "validation") {
+        const formatted: { [key: string]: string } = {};
+        Object.keys(error.errors).forEach((field) => {
+          formatted[field] = error.errors[field][0];
+        });
+        setErrors(formatted);
+      } else {
+        Alert.alert("Đăng nhập thất bại", error.message || "Có lỗi xảy ra");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -64,22 +93,24 @@ export default function LoginScreen() {
           <InputField
             icon={<Mail size={20} color={Colors.textSecondary} style={styles.inputIcon} />}
             placeholder="Email"
-            value={email}
+            value={form.email}
             onChangeText={(text: string) => {
-              setEmail(text);
-              setEmailError('');
+              setForm({ ...form, email: text });
+              setErrors((prev) => ({ ...prev, email: '' }));
             }}
             keyboardType="email-address"
             autoCapitalize="none"
-            error={emailError}
+            error={errors.email}
           />
 
           <InputPassword
             placeholder="Mật khẩu"
-            value={password}
+            value={form.password}
             onChangeText={(text) => {
-              setPassword(text);
+              setForm({ ...form, password: text });
+              setErrors((prev) => ({ ...prev, password: '' }));
             }}
+            error={errors.password}
             secureToggle={true}
           />
 

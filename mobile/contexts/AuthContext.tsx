@@ -34,9 +34,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
             } else {
                 throw { type: "server", message: res.data.message || "Đăng nhập thất bại" };
             }
-        } catch (error: any) {
-            console.error('Login error:', error);
-            throw error;
         } finally {
             setIsLoading(false);
         }
