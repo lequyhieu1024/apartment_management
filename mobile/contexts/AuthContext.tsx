@@ -2,7 +2,7 @@ import React, {createContext, useContext, useState, useEffect} from 'react';
 import {AuthState, User} from '@/types/auth';
 import {axiosInstance} from "@/libs/axiosInstance";
 import {Alert} from "react-native";
-import {saveToken} from "@/libs/authStore";
+import {getToken, saveToken} from "@/libs/authStore";
 
 interface AuthContextType extends AuthState {
     login: (email: string, password: string) => Promise<void>;
@@ -24,27 +24,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-    }, []);
-
     const login = async (email: string, password: string): Promise<void> => {
         setIsLoading(true);
         try {
             const res = await axiosInstance.post("/auth/login", { email, password });
-
             if (res.data.status) {
-                setUser(res.data.data);
-                await saveToken(process.env.EXPO_PUBLIC_TOKEN_KEY! ,res.data.token);
+                setUser(res.data.data.user);
+                await saveToken(process.env.EXPO_PUBLIC_TOKEN_KEY!, res.data.data.token);
+            } else {
+                throw { type: "server", message: res.data.message || "Đăng nhập thất bại" };
             }
-            throw { type: "server", message: "Đăng nhập thất bại" };
+        } catch (error: any) {
+            console.error('Login error:', error);
+            throw error;
         } finally {
             setIsLoading(false);
         }
     };
-
 
     const register = async (email: string, password: string, name: string, role: string) => {
         setIsLoading(true);
@@ -53,8 +49,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
 
             if (res.data.status) {
                 setUser(res.data.data);
+            } else {
+                throw { type: "server", message: "Đăng nhập thất bại" };
             }
-            throw { type: "server", message: "Đăng ký thất bại" };
         } finally {
             setIsLoading(false);
         }
@@ -63,6 +60,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
     const logout = () => {
         setUser(null);
     };
+
+    // const loadInitialUser = async () => {
+    //     try {
+    //         const token = await getToken(process.env.EXPO_PUBLIC_TOKEN_KEY!);
+    //         if (token) {
+    //             const res = await axiosInstance.get("/auth/me");
+    //             if (res.data.status) {
+    //                 setUser(res.data.data.user);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error('Load initial user error:', error);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     loadInitialUser();
+    // }, []);
 
     const value: AuthContextType = {
         user,

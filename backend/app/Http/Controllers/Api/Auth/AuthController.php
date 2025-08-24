@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     use ApiResponse;
-//    public $userRepository;
-//    public function __construct(UserRepository $userRepository)
-//    {
-//        $this->userRepository = $userRepository;
-//    }
+    public $userRepository;
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function login(LoginRequest $request)
     {
@@ -41,11 +41,11 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $userRepository = new UserRepository();
         $data = $request->all();
         try {
             DB::beginTransaction();
-            $user = $userRepository->create($data);
+            $user = $this->userRepository->create($data);
+            $user->profile()->create([]);
             DB::commit();
             return $this->successResponse($user, 'Đăng ký tài khoản thành công.');
         } catch (\Exception $e) {

@@ -22,7 +22,7 @@ export const InputPassword: React.FC<InputFieldProps> = ({
 
   return (
     <View style={{ marginBottom: 12 }}>
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, error && styles.inputError]}>
         {icon || (
           <TouchableOpacity onPress={() => setHidden(!hidden)}>
             {hidden ? (
