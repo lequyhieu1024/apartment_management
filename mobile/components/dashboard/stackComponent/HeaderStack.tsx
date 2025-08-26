@@ -1,42 +1,21 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { styles } from '@/assets/styles.style';
-import { Package, Plus } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import React from 'react';
-import { BorderRadius, Spacing } from '@/constants/spacing';
+import { Spacing } from '@/constants/spacing';
+import { headerStackStyle } from '@/assets/headerStack.style';
 
 export const HeaderStackComponent = ({ iconTitle, title, iconAction }: { iconTitle: any, title: string, iconAction?: any }) => {
   return (
-  <View style={style.header}>
+  <View style={headerStackStyle.header}>
     <View style={ styles.flex }>
       {iconTitle}
-      <Text style={style.title}>{title}</Text>
+      <Text style={headerStackStyle.title}>{title}</Text>
     </View>
-    <TouchableOpacity style={style.addButton}>
+    <TouchableOpacity style={headerStackStyle.addButton}>
       <Plus size={28} color={Colors.primaryDark} style={{ marginTop: Spacing.sm }} />
     </TouchableOpacity>
   </View>
   );
 };
-
-const style = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.lg,
-    marginTop: Spacing.xs,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.text,
-  },
-  addButton: {
-    width: 32,
-    height: 32,
-    borderRadius: BorderRadius.full,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
