@@ -2,14 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/colors';
 import { Spacing, BorderRadius } from '@/constants/spacing';
-import { Users, DollarSign, Building, TrendingUp, Crown } from 'lucide-react-native';
+import { Users, DollarSign, Building, TrendingUp, Crown, Package } from 'lucide-react-native';
+import { IDashboard } from '@/interfaces/IDashboard';
+import { router } from 'expo-router';
 
 export default function SuperAdminDashboard() {
-  const stats = [
-    { title: 'Total Admins', value: '156', icon: Users, color: Colors.primary },
-    { title: 'Monthly Revenue', value: '₫45.2M', icon: DollarSign, color: Colors.success },
-    { title: 'Active Buildings', value: '89', icon: Building, color: Colors.secondary },
-    { title: 'Growth Rate', value: '+12.5%', icon: TrendingUp, color: Colors.accent },
+  const stats: IDashboard[] = [
+    { title: 'Total Admins', url: "/(stacks)/dashboard/", value: '156', icon: Users, color: Colors.primary },
+    { title: 'Monthly Revenue', url: "", value: '₫45.2M', icon: DollarSign, color: Colors.success },
+    { title: 'Active Buildings', url: "", value: '89', icon: Building, color: Colors.secondary },
+    { title: 'Growth Rate', url: "", value: '+12.5%', icon: TrendingUp, color: Colors.accent },
+    { title: 'Gói dịch vụ', url: "/(stacks)/dashboard/servicePackage", value: '10', icon: Package, color: Colors.accent },
   ];
 
   return (
@@ -22,7 +25,8 @@ export default function SuperAdminDashboard() {
 
       <View style={styles.statsGrid}>
         {stats.map((stat, index) => (
-          <TouchableOpacity key={index} style={styles.statCard}>
+          // @ts-ignore
+          <TouchableOpacity onPress={() => router.push(stat.url) } key={index} style={styles.statCard}>
             <View style={[styles.iconContainer, { backgroundColor: stat.color + '20' }]}>
               <stat.icon size={24} color={stat.color} />
             </View>

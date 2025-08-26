@@ -2,7 +2,7 @@ import React, {createContext, useContext, useState, useEffect} from 'react';
 import {AuthState, User} from '@/types/auth';
 import {axiosInstance} from "@/libs/axiosInstance";
 import {Alert} from "react-native";
-import {getToken, saveToken} from "@/libs/authStore";
+import { deleteToken, getToken, saveToken } from '@/libs/authStore';
 
 interface AuthContextType extends AuthState {
     login: (email: string, password: string) => Promise<void>;
@@ -54,29 +54,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
         setUser(null);
+        await deleteToken(process.env.EXPO_PUBLIC_TOKEN_KEY!);
     };
 
-    // const loadInitialUser = async () => {
-    //     try {
-    //         const token = await getToken(process.env.EXPO_PUBLIC_TOKEN_KEY!);
-    //         if (token) {
-    //             const res = await axiosInstance.get("/auth/me");
-    //             if (res.data.status) {
-    //                 setUser(res.data.data.user);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error('Load initial user error:', error);
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     loadInitialUser();
-    // }, []);
+    const loadInitialUser = async () => {
+        try {
+            const token = await getToken(process.env.EXPO_PUBLIC_TOKEN_KEY!);
+            if (token) {
+                const res = await axiosInstance.get("/auth/me");
+                if (res.data.status) {
+                    setUser(res.data.data);
+                }
+            }
+        } catch (error) {
+            console.error('Load initial user error:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadInitialUser();
+    }, []);
 
     const value: AuthContextType = {
         user,

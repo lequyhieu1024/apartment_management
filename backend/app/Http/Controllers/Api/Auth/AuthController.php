@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Repositories\UserRepository;
 use App\Traits\ApiResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -52,5 +53,11 @@ class AuthController extends Controller
             DB::rollBack();
             return $this->errorResponse($e->getMessage());
         }
+    }
+
+    public function me(Request $request)
+    {
+        $user = $request->user();
+        return $this->successResponse($user, 'Lấy thông tin người dùng thành công');
     }
 }
