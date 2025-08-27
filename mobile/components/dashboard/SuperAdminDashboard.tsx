@@ -12,7 +12,7 @@ export default function SuperAdminDashboard() {
     { title: 'Monthly Revenue', url: "", value: '₫45.2M', icon: DollarSign, color: Colors.success },
     { title: 'Active Buildings', url: "", value: '89', icon: Building, color: Colors.secondary },
     { title: 'Growth Rate', url: "", value: '+12.5%', icon: TrendingUp, color: Colors.accent },
-    { title: 'Gói dịch vụ', url: "/(stacks)/dashboard/servicePackage", value: '10', icon: Package, color: Colors.accent },
+    { title: 'Gói dịch vụ', url: "/(stacks)/dashboard/service/list", value: '10', icon: Package, color: Colors.accent },
   ];
 
   return (

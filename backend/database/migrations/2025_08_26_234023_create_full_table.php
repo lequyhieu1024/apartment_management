@@ -239,10 +239,8 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->string('name');
             $table->json('features')->nullable();
-            $table->decimal('price', 12, 2);
-            $table->enum('price_type', ['per_month', 'per_year'])->default('per_month');
-            $table->integer('sale');
-            $table->enum('sale_type', ['fixed', 'percentage'])->default('percentage');
+            $table->decimal('price_month', 12, 2);
+            $table->decimal('price_year', 12, 2);
             $table->timestamps();
             $table->index('name');
         });

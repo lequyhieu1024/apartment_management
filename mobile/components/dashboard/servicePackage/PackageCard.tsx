@@ -20,11 +20,11 @@ export const PackageCard = ({packageData}: { packageData: IPackage }) => {
       <View style={styles.paymentDetails}>
         <View style={styles.paymentAmount}>
           <Text style={styles.amountLabel}>Giá tiền:</Text>
-          <Text style={styles.amountValue}>{convertToInt(packageData.price)}/tháng</Text>
+          <Text style={styles.amountValue}>{convertToInt(packageData.price_month)}/tháng</Text>
         </View>
         <View style={styles.paymentPeriod}>
-          <Text style={styles.periodLabel}>Thanh toán 1 năm:</Text>
-          <Text style={styles.periodValue}>- {convertToInt(packageData.sale) + SaleTypeVi[packageData.sale_type]}</Text>
+          <Text style={styles.periodLabel}>Giá mỗi năm:</Text>
+          <Text style={styles.amountValue}>{convertToInt(packageData.price_year)}/năm</Text>
         </View>
       </View>
 

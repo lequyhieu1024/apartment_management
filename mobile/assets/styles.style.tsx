@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: Spacing.lg,
     justifyContent: 'center'
   },
   header: {
@@ -354,5 +353,57 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm
-  }
+  },
+  pickerButton: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    justifyContent: 'center',
+  },
+  pickerButtonText: {
+    fontSize: 16,
+    color: Colors.primaryDark,
+  },
+  errorBorder: {
+    borderColor: Colors.error,
+  },
+  errorText: {
+    color: Colors.error,
+    fontSize: 12,
+    marginBottom: 16,
+    marginTop: -12,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 20,
+    maxHeight: '50%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
+    color: Colors.primaryDark,
+  },
+  pickerList: {
+    marginBottom: 16,
+  },
+  pickerItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  pickerItemText: {
+    fontSize: 16,
+    color: Colors.primaryDark,
+  },
 });

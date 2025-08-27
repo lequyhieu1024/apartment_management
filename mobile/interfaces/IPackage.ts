@@ -2,10 +2,8 @@ export interface IPackage {
   id: string;
   name: string;
   features: Record<string, any>;
-  price: number;
-  price_type: 'per_month' | 'per_year';
-  sale: number;
-  sale_type: 'fixed' | 'percentage';
+  price_month: number;
+  price_year: number;
   created_at: string;
   updated_at: string;
 }
@@ -23,10 +21,8 @@ export const mockPackage: IPackage[] = [
       "Tự tạo hoá đơn": "Không có",
       "Thông báo đẩy": "Không có",
     },
-    price: 2500000,
-    price_type: 'per_month',
-    sale: 10,
-    sale_type: 'percentage',
+    price_month: 2500000,
+    price_year: 26000000,
     created_at: '2025-01-01T00:00:00Z',
     updated_at: '2025-01-10T00:00:00Z',
   },
@@ -42,10 +38,8 @@ export const mockPackage: IPackage[] = [
       "Tự tạo hoá đơn": "Không có",
       "Thông báo đẩy": "Không có",
     },
-    price: 1500000,
-    price_type: 'per_month',
-    sale: 200000,
-    sale_type: 'fixed',
+    price_month: 1500000,
+    price_year: 17000000,
     created_at: '2025-01-05T00:00:00Z',
     updated_at: '2025-01-15T00:00:00Z',
   },
@@ -61,10 +55,8 @@ export const mockPackage: IPackage[] = [
       "Tự tạo hoá đơn": "Không có",
       "Thông báo đẩy": "Không có",
     },
-    price: 2000000,
-    price_type: 'per_year',
-    sale: 15,
-    sale_type: 'percentage',
+    price_month: 500000,
+    price_year: 7000000,
     created_at: '2024-12-01T00:00:00Z',
     updated_at: '2024-12-15T00:00:00Z',
   },
@@ -80,10 +72,8 @@ export const mockPackage: IPackage[] = [
       "Tự tạo hoá đơn": "Không có",
       "Thông báo đẩy": "Không có",
     },
-    price: 2000000,
-    price_type: 'per_year',
-    sale: 15,
-    sale_type: 'percentage',
+    price_month: 2500000,
+    price_year: 26000000,
     created_at: '2024-12-01T00:00:00Z',
     updated_at: '2024-12-15T00:00:00Z',
   },
@@ -99,10 +89,8 @@ export const mockPackage: IPackage[] = [
       "Tự tạo hoá đơn": "Không có",
       "Thông báo đẩy": "Không có",
     },
-    price: 2000000,
-    price_type: 'per_year',
-    sale: 15,
-    sale_type: 'percentage',
+    price_month: 2500000,
+    price_year: 26000000,
     created_at: '2024-12-01T00:00:00Z',
     updated_at: '2024-12-15T00:00:00Z',
   },
@@ -118,10 +106,8 @@ export const mockPackage: IPackage[] = [
       "Tự tạo hoá đơn": "Không có",
       "Thông báo đẩy": "Không có",
     },
-    price: 2000000,
-    price_type: 'per_year',
-    sale: 15,
-    sale_type: 'percentage',
+    price_month: 2500000,
+    price_year: 26000000,
     created_at: '2024-12-01T00:00:00Z',
     updated_at: '2024-12-15T00:00:00Z',
   },

@@ -4,6 +4,6 @@ export enum PriceTypeVi {
 }
 
 export enum SaleTypeVi {
-  fixed = "đ",
-  percentage = "%"
+  fixed = "Cố định",
+  percentage = "Phần trăm"
 }
