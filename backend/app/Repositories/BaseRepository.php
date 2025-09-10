@@ -39,13 +39,46 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * Lấy danh sách có phân trang.
      *
-     * @param array $data ['size' => int]
+     * @param array $data [
+     *   'size' => int,
+     *   'where' => ['status' => 'active', 'type' => 1],
+     *   'whereIn' => ['id' => [1, 2, 3]],
+     *   'like' => ['name' => 'john', 'email' => '@gmail.com'],
+     *   'orderBy' => [['created_at', 'desc'], ['id', 'asc']],
+     * ]
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getAll($data)
+    public function getPaginate(array $data)
     {
-        return $this->model->paginate($data['size'] ?? 10);
+        $query = $this->model->newQuery();
+
+        if (!empty($data['where'])) {
+            foreach ($data['where'] as $column => $value) {
+                $query->where($column, $value);
+            }
+        }
+
+        if (!empty($data['whereIn'])) {
+            foreach ($data['whereIn'] as $column => $values) {
+                $query->whereIn($column, $values);
+            }
+        }
+
+        if (!empty($data['like'])) {
+            foreach ($data['like'] as $column => $value) {
+                $query->where($column, 'like', "%{$value}%");
+            }
+        }
+
+        if (!empty($data['orderBy'])) {
+            foreach ($data['orderBy'] as $order) {
+                $query->orderBy($order[0], $order[1] ?? 'asc');
+            }
+        }
+
+        return $query->paginate($data['size'] ?? 10);
     }
+
 
     /**
      * Lấy toàn bộ bản ghi (không phân trang).

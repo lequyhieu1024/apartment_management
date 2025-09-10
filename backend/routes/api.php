@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\ManageAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +14,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-//Route::prefix('v1')->middleware('verify.apikey')->group(function () {
+//Route::prefix('v1')->middleware('verify.apikey')->group(function () { // middleware authenticate api from app
 Route::prefix('v1')->group(function () {
+    // auth route
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
         Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+    });
+
+    // Supper Admin Route
+    Route::prefix('super-admin')->group(function () {
+        Route::resource('manage-admin', ManageAdminController::class);
     });
 });

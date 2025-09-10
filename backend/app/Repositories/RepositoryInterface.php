@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 interface RepositoryInterface
 {
-    public function getAll($size);
+    public function getPaginate(array $data);
 
     public function getAllNotPaginate();
 
