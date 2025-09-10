@@ -85,7 +85,7 @@ export default function LoginScreen() {
       <View style={styles.content}>
         <View style={styles.header}>
           <LogIn size={48} color={Colors.primary} />
-          <Text style={styles.title}>PropertyHub</Text>
+          <Text style={styles.title}>Quản lý phòng trọ</Text>
           <Text style={styles.subtitle}>Quản lý phòng trọ & Chợ chung cư</Text>
         </View>
 

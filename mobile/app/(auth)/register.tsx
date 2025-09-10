@@ -85,11 +85,11 @@ export default function RegisterScreen() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={[styles.scrollContent, styles.content]}>
         <View style={styles.header}>
           <UserPlus size={48} color={Colors.primary} />
           <Text style={styles.title}>Đăng ký tài khoản</Text>
-          <Text style={styles.subtitle}>Tạo tài khoản mới để sử dụng PropertyHub</Text>
+          <Text style={styles.subtitle}>Tạo tài khoản mới để sử dụng Quản lý phòng trọ</Text>
         </View>
 
         <View style={styles.form}>

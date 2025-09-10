@@ -1,140 +1,63 @@
 import { Tabs } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
 import { Colors } from '@/constants/colors';
-import { Chrome as Home, Building, MessageCircle, ShoppingBag, Settings, Users, CreditCard, CircleHelp as HelpCircle } from 'lucide-react-native';
+import { Home, Building, MessageCircle, ShoppingBag, Settings, Users, CreditCard, CircleHelp as HelpCircle } from 'lucide-react-native';
 
 export default function TabLayout() {
   const { user } = useAuth();
 
-  const getTabsForRole = () => {
-    if (user?.role === 'super_admin') {
-      return (
-        <>
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: 'Dashboard',
-              tabBarIcon: ({ size, color }) => (
-                <Home size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="admins"
-            options={{
-              title: 'Admins',
-              tabBarIcon: ({ size, color }) => (
-                <Users size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="payments"
-            options={{
-              title: 'Payments',
-              tabBarIcon: ({ size, color }) => (
-                <CreditCard size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="settings"
-            options={{
-              title: 'Settings',
-              tabBarIcon: ({ size, color }) => (
-                <Settings size={size} color={color} />
-              ),
-            }}
-          />
-        </>
-      );
-    }
+  const role: string | null = user?.role || null;
 
-    if (user?.role === 'admin') {
-      return (
-        <>
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: 'Dashboard',
-              tabBarIcon: ({ size, color }) => (
-                <Home size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="buildings"
-            options={{
-              title: 'Tòa nhà',
-              tabBarIcon: ({ size, color }) => (
-                <Building size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="chat"
-            options={{
-              title: 'Chat',
-              tabBarIcon: ({ size, color }) => (
-                <MessageCircle size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="settings"
-            options={{
-              title: 'Settings',
-              tabBarIcon: ({ size, color }) => (
-                <Settings size={size} color={color} />
-              ),
-            }}
-          />
-        </>
-      );
-    }
-
-    // Member role
-    return (
-      <>
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: 'Trang chủ',
-            tabBarIcon: ({ size, color }) => (
-              <Home size={size} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="marketplace"
-          options={{
-            title: 'Chợ',
-            tabBarIcon: ({ size, color }) => (
-              <ShoppingBag size={size} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="chat"
-          options={{
-            title: 'Chat',
-            tabBarIcon: ({ size, color }) => (
-              <MessageCircle size={size} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="support"
-          options={{
-            title: 'Hỗ trợ',
-            tabBarIcon: ({ size, color }) => (
-              <HelpCircle size={size} color={color} />
-            ),
-          }}
-        />
-      </>
-    );
-  };
+  const allTabs = [
+    {
+      name: 'index',
+      title: 'Trang chủ',
+      icon: Home,
+      allowedRoles: ['super_admin', 'admin', 'member'],
+    },
+    {
+      name: 'admins',
+      title: 'QL Admin',
+      icon: Users,
+      allowedRoles: ['super_admin'],
+    },
+    {
+      name: 'payments',
+      title: 'Thanh toán',
+      icon: CreditCard,
+      allowedRoles: ['super_admin'],
+    },
+    {
+      name: 'buildings',
+      title: 'Tòa nhà',
+      icon: Building,
+      allowedRoles: ['admin'],
+    },
+    {
+      name: 'chat',
+      title: 'Tin nhắn',
+      icon: MessageCircle,
+      allowedRoles: ['admin', 'member'],
+    },
+    {
+      name: 'marketplace',
+      title: 'Chợ',
+      icon: ShoppingBag,
+      allowedRoles: ['member'],
+    },
+    {
+      name: 'support',
+      title: 'Hỗ trợ',
+      icon: HelpCircle,
+      allowedRoles: ['admin', 'super_admin'],
+    },
+    {
+      name: 'settings',
+      title: 'Cài đặt',
+      icon: Settings,
+      allowedRoles: ['super_admin', 'admin', 'member'],
+    },
+  ];
 
   return (
     <Tabs
@@ -154,8 +77,21 @@ export default function TabLayout() {
           fontSize: 12,
           fontWeight: '500',
         },
-      }}>
-      {getTabsForRole()}
+      }}
+    >
+      {allTabs.map((tab) => (
+        <Tabs.Screen
+          key={tab.name}
+          name={tab.name}
+          options={{
+            title: tab.title,
+            tabBarIcon: ({ size, color }) => (
+              <tab.icon size={size} color={color} />
+            ),
+            href: tab.allowedRoles.includes(role as string) ? undefined : null,
+          }}
+        />
+      ))}
     </Tabs>
   );
 }

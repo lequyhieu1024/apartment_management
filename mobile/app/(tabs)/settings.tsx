@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,18 +12,19 @@ import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/colors';
 import { Spacing, BorderRadius } from '@/constants/spacing';
 import { Settings as SettingsIcon, User, Bell, Shield, CircleHelp as HelpCircle, LogOut, Moon, Globe, CreditCard, Crown } from 'lucide-react-native';
+import { ConfirmModal } from '@/components/modal';
 
 export default function SettingsScreen() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
 
   const handleLogout = () => {
-    logout();
-    router.replace('/(auth)/login');
+    setVisible(true);
   };
 
   const SettingItem = ({ 
-    icon: Icon, 
+    icon: Icon,
     title, 
     subtitle, 
     onPress, 
@@ -76,15 +77,6 @@ export default function SettingsScreen() {
     }
   };
 
-  const getRoleIcon = (role: string) => {
-    switch (role) {
-      case 'super_admin': return Crown;
-      case 'admin': return Shield;
-      case 'member': return User;
-      default: return User;
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -101,7 +93,6 @@ export default function SettingsScreen() {
               <Text style={styles.profileName}>{user?.name}</Text>
               <Text style={styles.profileEmail}>{user?.email}</Text>
               <View style={styles.roleContainer}>
-                {/*{getRoleIcon(user?.role || 'member')({ size: 14, color: Colors.primary })}*/}
                 <Text style={styles.roleText}>{getRoleLabel(user?.role || 'member')}</Text>
               </View>
             </View>
@@ -184,6 +175,16 @@ export default function SettingsScreen() {
           />
         </View>
       </ScrollView>
+      <ConfirmModal
+        visible={visible}
+        message="Bạn có chắc chắn muốn đăng xuất không?"
+        onConfirm={() => {
+          setVisible(false);
+          logout();
+          router.replace('/(auth)/login');
+        }}
+        onCancel={() => setVisible(false)}
+      />
     </View>
   );
 }

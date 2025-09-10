@@ -1,3 +1,5 @@
+import { Colors } from '@/constants/colors';
+
 export function convertToInt(decimal: any) {
   const intValue = Math.floor(decimal);
   return intValue.toLocaleString('vi-VN');
@@ -25,3 +27,32 @@ export function parseJson(value: Record<string, any>) {
     return {};
   }
 }
+
+export const formatCurrency = (amount: any) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(amount);
+};
+
+export const getStatusBadgeStyle = (status: string) => {
+  switch (status) {
+    case 'active':
+      return { backgroundColor: Colors.success + '20', color: Colors.success };
+    case 'inactive':
+      return { backgroundColor: Colors.error + '20', color: Colors.error };
+    case 'pending':
+      return { backgroundColor: Colors.warning + '20', color: Colors.warning };
+    default:
+      return { backgroundColor: Colors.neutral[200], color: Colors.neutral[600] };
+  }
+};
+
+export const getStatusLabel = (status: string) => {
+  switch (status) {
+    case 'active': return 'HOẠT ĐỘNG';
+    case 'inactive': return 'TẠM DỪNG';
+    case 'pending': return 'CHỜ THANH TOÁN';
+    default: return status.toUpperCase();
+  }
+};
