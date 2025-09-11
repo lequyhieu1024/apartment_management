@@ -4,8 +4,7 @@ import { Colors } from '@/constants/colors';
 import React from 'react';
 import { IPackage } from '@/interfaces/IPackage';
 import { styles } from '@/assets/styles.style';
-import { convertDate, convertToInt, parseJson } from '@/helpers/common';
-import { SaleTypeVi } from '@/enums/common';
+import { convertDate, convertToInt } from '@/helpers/common';
 
 export const PackageCard = ({packageData}: { packageData: IPackage }) => {
   return (

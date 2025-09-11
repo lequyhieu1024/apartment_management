@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/colors';
 import { Spacing, BorderRadius } from '@/constants/spacing';
 import { Building, Users, DollarSign, CircleAlert as AlertCircle, Shield } from 'lucide-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AdminDashboard() {
   const stats = [
@@ -13,7 +14,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Shield size={24} color={Colors.primary} />
         <Text style={styles.title}>Admin Dashboard</Text>
@@ -86,7 +87,7 @@ export default function AdminDashboard() {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

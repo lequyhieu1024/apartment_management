@@ -1,4 +1,5 @@
 import { Colors } from '@/constants/colors';
+import { IBuilding } from '@/interfaces/IBuilding';
 
 export function convertToInt(decimal: any) {
   const intValue = Math.floor(decimal);
@@ -55,4 +56,8 @@ export const getStatusLabel = (status: string) => {
     case 'pending': return 'CHỜ THANH TOÁN';
     default: return status.toUpperCase();
   }
+};
+
+export const getOccupancyRate = (building: any) => {
+  return Math.round((building?.occupied_rooms / building?.total_rooms) * 100);
 };

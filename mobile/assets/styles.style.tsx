@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
     justifyContent: 'center'
   },
   loginButton: {
@@ -223,6 +223,12 @@ export const styles = StyleSheet.create({
     padding: Spacing.md,
     marginBottom: Spacing.md,
     borderWidth: 1,
+    borderColor: Colors.border
+  },
+  stackForm: {
+    backgroundColor: Colors.background,
+    borderRadius: BorderRadius.lg,
+    marginBottom: Spacing.md,
     borderColor: Colors.border
   },
   paymentHeader: {

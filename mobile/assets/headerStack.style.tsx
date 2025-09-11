@@ -8,7 +8,7 @@ export const headerStackStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: Spacing.sm,
-    marginTop: Spacing.xl,
+    marginTop: Spacing.xs,
   },
   title: {
     fontSize: 24,

@@ -80,7 +80,7 @@ export const PackageForm = ({ type, data }: IFormType & { data?: IPackage }) => 
       keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
     >
       <ScrollView contentContainerStyle={{ paddingTop: Spacing.sm }}>
-        <View style={[styles.paymentCard]}>
+        <View style={[styles.stackForm]}>
           <InputField
             placeholder="Tên gói"
             value={form.name}
@@ -138,10 +138,6 @@ export const PackageForm = ({ type, data }: IFormType & { data?: IPackage }) => 
             <Text style={styles.registerButtonText}>
               {isLoading ? 'Đang xử lý...' : type === 'edit' ? 'Lưu' : 'Tạo mới'}
             </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => router.back()} style={{ marginTop: 16 }}>
-            <Text style={[styles.loginText, styles.registerLink]}>Trở lại</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

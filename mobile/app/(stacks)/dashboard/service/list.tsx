@@ -8,13 +8,13 @@ import { Package, Plus } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function List() {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <SafeAreaView style={[styles.container, styles.content]}>
       <View style={styles.container}>
         <HeaderStackComponent
-          iconTitle={<Package size={24} color={Colors.primaryDark} />}
           title={'Danh sách dịch vụ'}
           iconAction={<Plus size={28} color={Colors.primaryDark} style={{ marginTop: Spacing.sm }} />}
           action={() => router.push('/(stacks)/dashboard/service/create')}
@@ -26,6 +26,6 @@ export default function List() {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }

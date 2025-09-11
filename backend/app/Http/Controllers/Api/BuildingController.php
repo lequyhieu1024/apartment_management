@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BuildingFormRequest;
 use App\Models\Building;
 use App\Repositories\BuildingRepository;
 use App\Traits\ApiResponse;
@@ -32,9 +33,15 @@ class BuildingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BuildingFormRequest $request)
     {
-        //
+        try {
+            $data = $request->all();
+            $building = $this->buildingRepository->create($data);
+            return $this->successResponse($building, 'Create building successfully', 201);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
     }
 
     /**

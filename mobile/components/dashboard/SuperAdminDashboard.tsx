@@ -5,6 +5,7 @@ import { Spacing, BorderRadius } from '@/constants/spacing';
 import { Users, DollarSign, Building, TrendingUp, Crown, Package } from 'lucide-react-native';
 import { IDashboard } from '@/interfaces/IDashboard';
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SuperAdminDashboard() {
   const stats: IDashboard[] = [
@@ -16,7 +17,7 @@ export default function SuperAdminDashboard() {
   ];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Crown size={24} color={Colors.warning} />
         <Text style={styles.title}>Super Admin Dashboard</Text>
@@ -69,7 +70,7 @@ export default function SuperAdminDashboard() {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

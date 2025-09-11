@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\BuildingController;
 use App\Http\Controllers\Api\ManageAdminController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,10 @@ Route::prefix('v1')->group(function () {
     // Supper Admin Route
     Route::prefix('super-admin')->group(function () {
         Route::resource('manage-admin', ManageAdminController::class);
+    });
+
+    // Admin Route
+    Route::prefix('admin')->group(function () {
+        Route::resource('buildings', BuildingController::class);
     });
 });

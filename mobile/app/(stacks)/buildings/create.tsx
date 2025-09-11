@@ -1,10 +1,8 @@
-import { ScrollView, View } from 'react-native';
-import { PackageForm } from '@/components/dashboard/servicePackage/PackageForm';
+import { View } from 'react-native';
 import { HeaderStackComponent } from '@/components/dashboard/stackComponent/HeaderStack';
-import { Plus } from 'lucide-react-native';
-import { Colors } from '@/constants/colors';
 import { styles } from '@/assets/styles.style';
 import React from 'react';
+import { BuildingForm } from '@/components/building/BuildingForm';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function create() {
@@ -12,9 +10,9 @@ export default function create() {
     <SafeAreaView style={[styles.container, styles.content]}>
       <View style={styles.container}>
         <HeaderStackComponent
-          title={"Tạo gói dịch vụ"}
+        title={"Tạo toà nhà"}
         />
-        <PackageForm type={'create'}/>
+        <BuildingForm type={'create'}/>
       </View>
     </SafeAreaView>
   )
