@@ -26,10 +26,9 @@ class BuildingFormRequest extends FormRequest
         return [
             'name' => 'required|string',
             'address' => 'required|string',
-            'code' => 'required|string|max:10',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|string|max:255',
-            'price' => 'required|string',
+            'code' => 'required|string|max:10|min:10|unique:buildings,code',
+            'thumbnail' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
         ];
     }
 }

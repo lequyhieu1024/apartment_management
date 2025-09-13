@@ -48,7 +48,7 @@ export default function BuildingsScreen() {
         <View style={styles.summaryStats}>
           <View style={styles.summaryItem}>
             <Building size={20} color={Colors.primary} />
-            <Text style={styles.summaryValue}>3</Text>
+            <Text style={styles.summaryValue}>{buildings.length}</Text>
             <Text style={styles.summaryLabel}>Tòa nhà</Text>
           </View>
           <View style={styles.summaryItem}>

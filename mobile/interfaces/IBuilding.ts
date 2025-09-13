@@ -1,5 +1,5 @@
 export interface IBuilding {
-  id: string;
+  id?: string;
   name?: string;
   code?: string;
   address?: string;

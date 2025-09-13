@@ -11,7 +11,7 @@ class Building extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'address', 'description', 'owner_user_id', 'code'
+        'name', 'address', 'description', 'owner_user_id', 'code', 'thumbnail'
     ];
 
     public function owner() {

@@ -97,7 +97,6 @@ export const styles = StyleSheet.create({
   buildingStats: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Spacing.md,
   },
   statItem: {
     flexDirection: 'row',

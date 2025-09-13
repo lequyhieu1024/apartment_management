@@ -8,6 +8,7 @@ use App\Models\Building;
 use App\Repositories\BuildingRepository;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BuildingController extends Controller
 {
@@ -37,6 +38,7 @@ class BuildingController extends Controller
     {
         try {
             $data = $request->all();
+            $data['owner_user_id'] = $request->user()->id;
             $building = $this->buildingRepository->create($data);
             return $this->successResponse($building, 'Create building successfully', 201);
         } catch (\Exception $e) {

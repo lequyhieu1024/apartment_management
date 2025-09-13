@@ -59,5 +59,21 @@ export const getStatusLabel = (status: string) => {
 };
 
 export const getOccupancyRate = (building: any) => {
-  return Math.round((building?.occupied_rooms / building?.total_rooms) * 100);
+  const occupied = building?.occupied_rooms ?? 0;
+  const total = building?.total_rooms ?? 0;
+
+  if (total === 0) return 0;
+
+  return Math.round((occupied / total) * 100);
+};
+
+
+export const autoGenerateBuildingCode = (): string => {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    code += chars[randomIndex];
+  }
+  return code;
 };

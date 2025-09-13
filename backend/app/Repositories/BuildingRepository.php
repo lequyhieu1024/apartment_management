@@ -23,7 +23,6 @@ class BuildingRepository extends BaseRepository {
             $query->where('owner_user_id', $data['owner_user_id']);
         }
 
-        return $query->paginate($data['size'] ?? 10);
+        return $query->orderBy('id', 'desc')->paginate($data['size'] ?? 10);
     }
-
 }
